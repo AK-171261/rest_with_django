@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-
 # Create your views here.
 def emp_data_view(request):
     emp_data = {
@@ -55,7 +54,7 @@ def emp_data_json_view2(request):
 
 
 from django.views.generic import View
-
+from testapp.mixins import HttpResponseMixin
 
 # class JsonCBV(View):
 #     def get(self, request, *args, **kwargs):
@@ -69,19 +68,39 @@ from django.views.generic import View
 #         return JsonResponse(emp_data)
 
 
-class JsonCBV(View):
+# class JsonCBV(View):
+#     def get(self, request, *args, **kwargs):
+#         json_data = json.dumps({"msg": "This is get method"})
+#         return HttpResponse(json_data, content_type="application/json")
+#
+#     def post(self, request, *args, **kwargs):
+#         json_data = json.dumps({"msg": "This is post method"})
+#         return HttpResponse(json_data, content_type="application/json")
+#
+#     def put(self, request, *args, **kwargs):
+#         json_data = json.dumps({"msg": "This is put method"})
+#         return HttpResponse(json_data, content_type="application/json")
+#
+#     def delete(self, request, *args, **kwargs):
+#         json_data = json.dumps({"msg": "This is delete method"})
+#         return HttpResponse(json_data, content_type="application/json")
+#
+#
+
+#using mixing to remove duplication and maintain code reusability
+class JsonCBV(HttpResponseMixin, View):
     def get(self, request, *args, **kwargs):
         json_data = json.dumps({"msg": "This is get method"})
-        return HttpResponse(json_data, content_type="application/json")
+        return self.render_to_http_response(json_data)
 
     def post(self, request, *args, **kwargs):
         json_data = json.dumps({"msg": "This is post method"})
-        return HttpResponse(json_data, content_type="application/json")
+        return self.render_to_http_response(json_data)
 
     def put(self, request, *args, **kwargs):
         json_data = json.dumps({"msg": "This is put method"})
-        return HttpResponse(json_data, content_type="application/json")
+        return self.render_to_http_response(json_data)
 
     def delete(self, request, *args, **kwargs):
         json_data = json.dumps({"msg": "This is delete method"})
-        return HttpResponse(json_data, content_type="application/json")
+        return self.render_to_http_response(json_data)
