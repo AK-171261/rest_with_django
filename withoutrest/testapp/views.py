@@ -54,7 +54,7 @@ def emp_data_json_view2(request):
 
 
 from django.views.generic import View
-from testapp.mixins import HttpResponseMixin
+from testapp.mixins import AnandResponseMixin
 
 # class JsonCBV(View):
 #     def get(self, request, *args, **kwargs):
@@ -87,8 +87,8 @@ from testapp.mixins import HttpResponseMixin
 #
 #
 
-#using mixing to remove duplication and maintain code reusability
-class JsonCBV(HttpResponseMixin, View):
+#using mixin to remove duplication and maintain code reusability
+class JsonCBV(AnandResponseMixin, View):
     def get(self, request, *args, **kwargs):
         json_data = json.dumps({"msg": "This is get method"})
         return self.render_to_http_response(json_data)
