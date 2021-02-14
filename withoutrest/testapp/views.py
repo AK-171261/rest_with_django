@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+
 # Create your views here.
 def emp_data_view(request):
     emp_data = {
@@ -56,6 +57,7 @@ def emp_data_json_view2(request):
 from django.views.generic import View
 from testapp.mixins import AnandResponseMixin
 
+
 # class JsonCBV(View):
 #     def get(self, request, *args, **kwargs):
 #         emp_data = {
@@ -87,7 +89,7 @@ from testapp.mixins import AnandResponseMixin
 #
 #
 
-#using mixin to remove duplication and maintain code reusability
+# using mixin to remove duplication and maintain code reusability
 class JsonCBV(AnandResponseMixin, View):
     def get(self, request, *args, **kwargs):
         json_data = json.dumps({"msg": "This is get method"})
