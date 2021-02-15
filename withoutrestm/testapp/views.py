@@ -3,7 +3,7 @@ from django.views.generic import View
 from .models import Employee
 import json
 from django.http import HttpResponse
-
+from .mixins import SerializeMixin
 
 # Create your views here.
 
@@ -32,7 +32,7 @@ from django.http import HttpResponse
 #         json_data = json.dumps(emp_data)
 #         return HttpResponse(json_data, content_type='application/json')
 
-#using serializers
+# using serializers
 from django.core.serializers import serialize
 
 
@@ -46,17 +46,18 @@ class EmployeeDetailCBV(View):
         #     'eaddr': emp.eaddr,
         # }
         # json_data = json.dumps(emp_data)
-        json_data = serialize('json',[emp,],fields=['ename','esal'])
+        json_data = serialize('json', [emp, ], fields=['ename', 'esal'])
         return HttpResponse(json_data, content_type='application/json')
 
 
-class EmployeeListCBV(View):
+class EmployeeListCBV(SerializeMixin, View):
     def get(self, request, *args, **kwargs):
         emp = Employee.objects.all()  # we got emp object from that object we will fetch desired result
-        json_data = serialize('json', emp,fields=['esal'])
-        p_dict = json.loads(json_data)
-        lst=[]
-        for obj in p_dict:
-            lst.append(obj["fields"])
-        json_data = serialize('json',lst)
+        # json_data = serialize('json', emp, fields=('esal','eno'))
+        # p_dict = json.loads(json_data)
+        # lst = []
+        # for obj in p_dict:
+        #     lst.append(obj["fields"])
+        # json_data = json.dumps(lst)
+        json_data = self.serialize(emp)
         return HttpResponse(json_data, content_type='application/json')
