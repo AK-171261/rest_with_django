@@ -38,7 +38,12 @@ from django.core.serializers import serialize
 
 class EmployeeDetailCBV(SerializeMixin, View):
     def get(self, request, id, *args, **kwargs):
-        emp = Employee.objects.get(id=id)  # we got emp object from that object we will fetch desired result
+        try:
+            emp = Employee.objects.get(id=id)  # we got emp object from that object we will fetch desired result
+        except Employee.DoesNotExist:
+            json_data = json.dumps({"msg": "The requested resource is not available"})
+            return HttpResponse(json_data, content_type='application/json')
+
         # emp_data = {
         #     'eno': emp.eno,
         #     'ename': emp.ename,
@@ -47,8 +52,9 @@ class EmployeeDetailCBV(SerializeMixin, View):
         # }
         # json_data = json.dumps(emp_data)
         # json_data = serialize('json', [emp, ], fields=['ename', 'esal'])
-        json_data = self.serialize([emp])
-        return HttpResponse(json_data, content_type='application/json')
+        else:
+            json_data = self.serialize([emp])
+            return HttpResponse(json_data, content_type='application/json')
 
 
 class EmployeeListCBV(SerializeMixin, View):
