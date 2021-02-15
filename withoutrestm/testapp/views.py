@@ -42,7 +42,7 @@ class EmployeeDetailCBV(SerializeMixin, View):
             emp = Employee.objects.get(id=id)  # we got emp object from that object we will fetch desired result
         except Employee.DoesNotExist:
             json_data = json.dumps({"msg": "The requested resource is not available"})
-            return HttpResponse(json_data, content_type='application/json')
+            return HttpResponse(json_data, content_type='application/json', status=404)
 
         # emp_data = {
         #     'eno': emp.eno,
@@ -54,7 +54,7 @@ class EmployeeDetailCBV(SerializeMixin, View):
         # json_data = serialize('json', [emp, ], fields=['ename', 'esal'])
         else:
             json_data = self.serialize([emp])
-            return HttpResponse(json_data, content_type='application/json')
+            return HttpResponse(json_data, content_type='application/json', status=400)
 
 
 class EmployeeListCBV(SerializeMixin, View):
