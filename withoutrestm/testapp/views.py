@@ -3,7 +3,7 @@ from django.views.generic import View
 from .models import Employee
 import json
 from django.http import HttpResponse
-from .mixins import SerializeMixin
+from .mixins import SerializeMixin, HttpResponseMixin
 
 # Create your views here.
 
@@ -36,14 +36,14 @@ from .mixins import SerializeMixin
 from django.core.serializers import serialize
 
 
-class EmployeeDetailCBV(SerializeMixin, View):
+class EmployeeDetailCBV(HttpResponseMixin,SerializeMixin, View):
     def get(self, request, id, *args, **kwargs):
         try:
             emp = Employee.objects.get(id=id)  # we got emp object from that object we will fetch desired result
         except Employee.DoesNotExist:
             json_data = json.dumps({"msg": "The requested resource is not available"})
-            return HttpResponse(json_data, content_type='application/json', status=404)
-
+            # return HttpResponse(json_data, content_type='application/json', status=404)
+            return self.render_to_http_response(json_data, status=404)
         # emp_data = {
         #     'eno': emp.eno,
         #     'ename': emp.ename,
@@ -54,7 +54,8 @@ class EmployeeDetailCBV(SerializeMixin, View):
         # json_data = serialize('json', [emp, ], fields=['ename', 'esal'])
         else:
             json_data = self.serialize([emp])
-            return HttpResponse(json_data, content_type='application/json', status=400)
+            # return HttpResponse(json_data, content_type='application/json', status=200)
+            return self.render_to_http_response(json_data)
 
 
 class EmployeeListCBV(SerializeMixin, View):
