@@ -36,7 +36,7 @@ from .mixins import SerializeMixin
 from django.core.serializers import serialize
 
 
-class EmployeeDetailCBV(View):
+class EmployeeDetailCBV(SerializeMixin, View):
     def get(self, request, id, *args, **kwargs):
         emp = Employee.objects.get(id=id)  # we got emp object from that object we will fetch desired result
         # emp_data = {
@@ -46,7 +46,8 @@ class EmployeeDetailCBV(View):
         #     'eaddr': emp.eaddr,
         # }
         # json_data = json.dumps(emp_data)
-        json_data = serialize('json', [emp, ], fields=['ename', 'esal'])
+        # json_data = serialize('json', [emp, ], fields=['ename', 'esal'])
+        json_data = self.serialize([emp])
         return HttpResponse(json_data, content_type='application/json')
 
 
