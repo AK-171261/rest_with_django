@@ -4,7 +4,9 @@ from .models import Employee
 import json
 from django.http import HttpResponse
 from .mixins import SerializeMixin, HttpResponseMixin
-
+from django.views.decorators.csrf import csrf_exempt  # to disable csrf_token
+from django.utils.decorators import method_decorator  # to disable csrf_token at class level
+from testapp.utils import is_json
 # Create your views here.
 
 # class EmployeeDetailCBV(View):
@@ -36,7 +38,7 @@ from .mixins import SerializeMixin, HttpResponseMixin
 from django.core.serializers import serialize
 
 
-class EmployeeDetailCBV(HttpResponseMixin,SerializeMixin, View):
+class EmployeeDetailCBV(HttpResponseMixin, SerializeMixin, View):
     def get(self, request, id, *args, **kwargs):
         try:
             emp = Employee.objects.get(id=id)  # we got emp object from that object we will fetch desired result
@@ -58,7 +60,8 @@ class EmployeeDetailCBV(HttpResponseMixin,SerializeMixin, View):
             return self.render_to_http_response(json_data)
 
 
-class EmployeeListCBV(SerializeMixin, View):
+@method_decorator(csrf_exempt, name="dispatch")
+class EmployeeListCBV(HttpResponseMixin, SerializeMixin, View):
     def get(self, request, *args, **kwargs):
         emp = Employee.objects.all()  # we got emp object from that object we will fetch desired result
         # json_data = serialize('json', emp, fields=('esal','eno'))
@@ -69,3 +72,8 @@ class EmployeeListCBV(SerializeMixin, View):
         # json_data = json.dumps(lst)
         json_data = self.serialize(emp)
         return HttpResponse(json_data, content_type='application/json')
+
+    def post(self, request, *args, **kwargs):
+        json_data = json.dumps({"msg": "This is from post"})
+        print(request)
+        return self.render_to_http_response(json_data=json_data)
