@@ -83,5 +83,14 @@ class EmployeeListCBV(HttpResponseMixin, SerializeMixin, View):
         if not valid_json:
             json_data = json.dumps({"msg": "Please send valid json data only"})
             return self.render_to_http_response(json_data, status=400)
-        json_data = json.dumps({"msg": "valid json data only"})
-        return self.render_to_http_response(json_data)
+        # json_data = json.dumps({"msg": "valid json data only"})
+        # return self.render_to_http_response(json_data)
+        emp_data = json.loads(data)
+        form = EmployeeForm(emp_data)
+        if form.is_valid():
+            form.save(commit=True)
+            json_data = json.dumps({"msg": "Resource is created sucessfully"})
+            return self.render_to_http_response(json_data)
+        if form.errors:
+            json_data = json.dumps(form.errors)  # form.errors is dictonary only
+            return self.render_to_http_response(json_data, status=400)

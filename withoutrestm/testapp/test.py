@@ -1,5 +1,6 @@
 # Create your tests here.
 import requests
+
 #
 BASE_URL = "http://localhost:8000/"
 ENDPOINT = "api/"
@@ -41,16 +42,21 @@ ENDPOINT = "api/"
 #
 # get_all()
 import json
+
 BASE_URL = "http://localhost:8000/"
 ENDPOINT = "apilist/"
+
+
 def create_resource():
-    new_emp={
-        'eno':500,
+    new_emp = {
+        'eno': 500,
         'ename': 'shiva',
-        'esal': 5000,
+        'esal': 00,
         'eaddr': 500,
     }
-    resp=requests.post(BASE_URL+ENDPOINT, data=json.dumps(new_emp))
+    resp = requests.post(BASE_URL + ENDPOINT, data=json.dumps(new_emp))
     print(resp.status_code)
     print(resp.json())
+
+
 create_resource()
