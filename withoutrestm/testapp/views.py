@@ -7,6 +7,7 @@ from .mixins import SerializeMixin, HttpResponseMixin
 from django.views.decorators.csrf import csrf_exempt  # to disable csrf_token
 from django.utils.decorators import method_decorator  # to disable csrf_token at class level
 from testapp.utils import is_json
+from .forms import EmployeeForm
 # Create your views here.
 
 # class EmployeeDetailCBV(View):
@@ -74,6 +75,13 @@ class EmployeeListCBV(HttpResponseMixin, SerializeMixin, View):
         return HttpResponse(json_data, content_type='application/json')
 
     def post(self, request, *args, **kwargs):
-        json_data = json.dumps({"msg": "This is from post"})
-        print(request)
-        return self.render_to_http_response(json_data=json_data)
+        # json_data = json.dumps({"msg": "This is from post"})
+        # print(request)
+        # return self.render_to_http_response(json_data=json_data)
+        data = request.body
+        valid_json = is_json(data)
+        if not valid_json:
+            json_data = json.dumps({"msg": "Please send valid json data only"})
+            return self.render_to_http_response(json_data, status=400)
+        json_data = json.dumps({"msg": "valid json data only"})
+        return self.render_to_http_response(json_data)
