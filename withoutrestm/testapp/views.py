@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt  # to disable csrf_token
 from django.utils.decorators import method_decorator  # to disable csrf_token at class level
 from testapp.utils import is_json
 from .forms import EmployeeForm
+from django.core.serializers import serialize
 # Create your views here.
 
 # class EmployeeDetailCBV(View):
@@ -38,6 +39,55 @@ from .forms import EmployeeForm
 # using serializers
 from django.core.serializers import serialize
 
+
+@method_decorator(csrf_exempt, name="dispatch")
+class EmployeeCRUDCBV(HttpResponseMixin, SerializeMixin, View):
+    def get_object_by_id(self, id):
+        try:
+            emp = Employee.objects.get(id=id)
+        except Employee.DoesNotExist:
+            emp = None
+        return emp
+
+    def get(self,request,*args,**kwargs):
+        data = request.body
+        valid_json = is_json(data)
+        if not valid_json:
+            json_data = json.dumps({"msg": "Please send valid json data only"})
+            return self.render_to_http_response(json_data, status=400)
+        pdata = json.loads(data)
+        id = pdata.get('id',None)
+        if id is not None:
+            emp = self.get_object_by_id(id)
+            if emp is None:
+                json_data = json.dumps({"msg": "The requested resource not available"})
+                return self.render_to_http_response(json_data, status=400)
+            json_data = self.serialize([emp,])
+            return self.render_to_http_response(json_data)
+        qs = Employee.objects.all()
+        json_data = self.serialize(qs)
+        return self.render_to_http_response(json_data)
+
+    def post(self, request, *args, **kwargs):
+        # json_data = json.dumps({"msg": "This is from post"})
+        # print(request)
+        # return self.render_to_http_response(json_data=json_data)
+        data = request.body
+        valid_json = is_json(data)
+        if not valid_json:
+            json_data = json.dumps({"msg": "Please send valid json data only"})
+            return self.render_to_http_response(json_data, status=400)
+        # json_data = json.dumps({"msg": "valid json data only"})
+        # return self.render_to_http_response(json_data)
+        emp_data = json.loads(data)
+        form = EmployeeForm(emp_data)
+        if form.is_valid():
+            form.save(commit=True)
+            json_data = json.dumps({"msg": "Resource is created sucessfully"})
+            return self.render_to_http_response(json_data)
+        if form.errors:
+            json_data = json.dumps(form.errors)  # form.errors is dictonary only
+            return self.render_to_http_response(json_data, status=400)
 
 @method_decorator(csrf_exempt, name="dispatch")
 class EmployeeDetailCBV(HttpResponseMixin, SerializeMixin, View):
