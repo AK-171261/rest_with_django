@@ -19,7 +19,7 @@ def get_resource(id):
     #     print("something goes wrong")
 
 
-id = input("Enter id: ")
+# id = input("Enter id: ")
 # get_resource(id)
 #
 # # import requests
@@ -95,7 +95,7 @@ BASE_URL = "http://localhost:8000/"
 ENDPOINT = "apilistttt/"
 
 
-def CRUD_with_single_endpoint_(id=None):
+def CRUD_with_single_endpoint_for_get_getall(id=None):
     data = {}
     if id is not None:
         data = {
@@ -105,4 +105,51 @@ def CRUD_with_single_endpoint_(id=None):
     print(resp.status_code)
     print(resp.json())
 
-CRUD_with_single_endpoint_(2)
+# CRUD_with_single_endpoint_for_get_getall(3)
+
+
+def CRUD_with_single_endpoint_for_post():
+    new_emp={
+        "eno":800,
+        "ename":'karina',
+        "esal":70000,
+        "eaddr":'Mumbai',
+    }
+
+    resp = requests.post(BASE_URL + ENDPOINT, data=json.dumps(new_emp))
+    print(resp.status_code)
+    print(resp.json())
+
+# CRUD_with_single_endpoint_for_post()
+
+
+def CRUD_with_single_endpoint_for_put(id):
+    new_emp={
+        "id":id,
+        "eno":800,
+        "ename":'karinaqqqqq',
+        "esal":70000,
+        "eaddr":'Mumbai',
+    }
+
+    resp = requests.put(BASE_URL + ENDPOINT, data=json.dumps(new_emp))
+    print(resp.status_code)
+    print(resp.json())
+
+
+# id = input("Enter id: ")
+# CRUD_with_single_endpoint_for_put(id)
+
+
+def CRUD_with_single_endpoint_for_delete(id=None):
+    data = {}
+    if id is not None:
+        data = {
+            'id': id
+        }
+    resp = requests.delete(BASE_URL + ENDPOINT, data=json.dumps(data))
+    print(resp.status_code)
+    print(resp.json())
+
+
+CRUD_with_single_endpoint_for_delete(9)
