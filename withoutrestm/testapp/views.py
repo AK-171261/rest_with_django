@@ -160,7 +160,7 @@ class EmployeeDetailCBV(HttpResponseMixin, SerializeMixin, View):
             json_data = json.dumps({"msg": "The requested resource is not available"})
             # return HttpResponse(json_data, content_type='application/json', status=404)
             return self.render_to_http_response(json_data, status=404)
-        # emp_data = {@method_decorator(csrf_exempt, name="dispatch")
+        # emp_data = {
         #     'eno': emp.eno,
         #     'ename': emp.ename,
         #     'esal': emp.esal,

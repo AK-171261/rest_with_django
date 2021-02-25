@@ -1,4 +1,4 @@
-"""withoutrestm URL Configuration
+"""withoutrestm2 URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
@@ -16,11 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from testapp import views
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/', views.EmployeeDetailCBV.as_view()),
-    path('api/<str:id>/', views.EmployeeDetailCBV.as_view()),
-    path('apilist/', views.EmployeeListCBV.as_view()),
-    path('apilistttt/', views.EmployeeCRUDCBV.as_view()),
+    path('api/', views.StudentCRUDCBV.as_view()),
+
 ]
