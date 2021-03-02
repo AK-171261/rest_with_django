@@ -4,7 +4,7 @@ import json
 
 
 class SerializeMixin(object):
-    def serialize(self, qs):
+    def serialize(self, qs ):
         json_data = serialize('json', qs) #json_data = serialize('json', qs, fields=('eno','ename','esal))
         p_dict = json.loads(json_data)
         lst = []

@@ -73,7 +73,7 @@ class StudentCRUDCBV(HttpResponseMixin, SerializeMixin, View):
                 "bf": student_object.bf,
             }
             original_data.update(provided_data)
-            form = StudentForm(original_data,instance=student_object)
+            form = StudentForm(original_data, instance=student_object)
             if form.is_valid():
                 form.save(commit=True)
                 return self.render_to_http_response(json.dumps({'msg': 'Resource updatedsucessfully'}))
@@ -82,7 +82,7 @@ class StudentCRUDCBV(HttpResponseMixin, SerializeMixin, View):
                 return self.render_to_http_response(json_data, status=400)
         return self.render_to_http_response(json.dumps({"msg": "Id is required to perform Updation"}), status=400)
 
-    def delete(self,request,*args,**kwargs):
+    def delete(self, request, *args, **kwargs):
         data = request.body
         valid_json = is_json(data)
         if not valid_json:
