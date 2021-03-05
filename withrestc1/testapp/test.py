@@ -20,9 +20,9 @@ def get_resources(id=None):
 
 def create_resource():
     new_emp = {
-        "ename": 'Virat',
-        "eno": 400,
-        "esal": 3500,
+        "ename": 'sunny123',
+        "eno": 500,
+        "esal": 7000,
         "eaddr": 'Hyderabad',
     }
 
@@ -31,13 +31,13 @@ def create_resource():
     print(resp.json())
 
 
-create_resource()
+# create_resource()
 
 def update_resource(id):
     new_emp = {
         "id": id,
-        "marks": 300,
-        "gf": 'Twinkle'
+        'ename':'sunny123',
+        "esal": 6000,
     }
 
     resp = requests.put(BASE_URL + ENDPOINT, data=json.dumps(new_emp))
@@ -45,8 +45,8 @@ def update_resource(id):
     print(resp.json())
 
 
-# id = input("Enter id: ")
-# update_resource(id)
+id = input("Enter id: ")
+update_resource(id)
 
 
 def delete_resource(id=None):
@@ -58,6 +58,5 @@ def delete_resource(id=None):
     resp = requests.delete(BASE_URL + ENDPOINT, data=json.dumps(data))
     print(resp.status_code)
     print(resp.json())
-
 
 # delete_resource(id)
