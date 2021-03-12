@@ -14,8 +14,6 @@ from rest_framework.generics import ListAPIView
 
 
 class EmployeeListAPIView(ListAPIView):
-    import pdb
-    pdb.set_trace()
-    get_queryset = Employee.objects.all()
-    queryset = EmployeeSerializer
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
 
