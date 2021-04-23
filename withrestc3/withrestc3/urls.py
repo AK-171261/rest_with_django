@@ -19,5 +19,16 @@ from testapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', views.EmployeeListAPIView.as_view()),
+    # path('api/', views.EmployeeListAPIView.as_view()),
+    # path('api_/', views.EmployeeCreateAPIView.as_view()),
+    # path('api_1/<int:id>/',views.EmployeeRetrieveAPIView.as_view()),
+    # path('api_2/<int:id>/',views.EmployeeUpdateAPIView.as_view()),
+    # path('api_3/<int:id>/',views.EmployeeDestroyAPIView.as_view()),
+    # path('api/', views.EmployeeListCreateAPIView.as_view()),
+    # path('api_/<int:id>', views.EmployeeRetrieveUpdateAPIView.as_view()),
+    # path('api_1/<int:id>/',views.EmployeeRetrieveDestroyAPIView.as_view()),
+    # path('api_2/<int:id>/',views.EmployeeRetrieveUpdateDestroyAPIView.as_view()),
+    path('apim/', views.EmployeeListCreateModelMixin.as_view()),
+    path('apim2/<int:id>', views.EmployeeRetrieveUpdateDestroyModelMixin.as_view()),
+
 ]
